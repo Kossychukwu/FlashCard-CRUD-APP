@@ -14,7 +14,7 @@ app.post('/decks', async(req: Request, res: Response)=>{
         title: req.body.title,
     })
     const CreatedDeck = await newDeck.save();
-    res.json(CreatedDeck)
+    res.json(CreatedDeck);
 })
 
 

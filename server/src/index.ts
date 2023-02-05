@@ -21,8 +21,7 @@ app.get('/decks', async (req: Request, res: Response)=>{
 })
 
 app.post('/decks', async(req: Request, res: Response)=>{
-    // res.send('hello user');
-    //console.log(req.body)
+   
     const newDeck = new Deck({
         title: req.body.title,
     })
@@ -30,6 +29,14 @@ app.post('/decks', async(req: Request, res: Response)=>{
     res.json(CreatedDeck);
 })
 
+app.delete("/decks/:deckID", async (req: Request, res: Response)=>{
+
+    const deckID = req.params.deckID 
+    
+    const deck = await Deck.findByIdAndDelete(deckID)
+
+    res.json(deck)
+})
 
 mongoose.set('strictQuery', true)
 mongoose.connect(process.env.MONGO_URL!).then(() => {

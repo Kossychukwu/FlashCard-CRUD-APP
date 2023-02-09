@@ -14,9 +14,9 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/decks', async (req: Request, res: Response)=>{
-    //how to fetch the data from mongo
+
     const decks = await Deck.find()
-    //how to send bsck the array to the ui
+
     res.json(decks)
 })
 

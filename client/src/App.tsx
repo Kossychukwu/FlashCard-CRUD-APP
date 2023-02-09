@@ -1,50 +1,39 @@
 import React, { ReactNode, useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
+import { Link } from "react-router-dom";
+import createDecks from './api/createDecks';
+import deleteDeck from './api/deleteDeck';
+import getDecks from './api/getDecks';
+import { TDeck } from './api/getDecks';
 import './App.css'
 
-type TDeck = {
-  title: string;
-  _id: string;
-}
+
+
 function App() {
   const [decks, setDecks] = useState <TDeck[]>([]);
   const [title, setTitle] = useState("");
 
   async function handleCreateDeck (e: React.FormEvent){
        e.preventDefault();
-      const response = await fetch('http://localhost:5000/decks', {
-        method: 'POST',
-        body: JSON.stringify({
-          title,
-        }),
-        headers:{
-          "Content-Type": "application/json",
-        },
-       })
-       const deck = await response.json()
+       const deck = await createDecks(title)
        setDecks([...decks, deck])
-
-      
        setTitle("")
   }
-
-  //mount
-
+ 
+//getDeck
   useEffect(()=>{
-     (async () => {
-      const response = await fetch("http://localhost:5000/decks");
-      const newDecks = await response.json()
+     async function fetchDecks() {
+    
+      const newDecks = await getDecks()
 
       setDecks(newDecks)
 
-     })();
+     }
+     fetchDecks();
     
   }, [])
 
   async function handleDelete(deckID: string) {
-     await fetch(`http://localhost:5000/decks/${deckID}`, {
-        method: 'DELETE',
-  })
+     await deleteDeck(deckID);
    setDecks(decks.filter((deck)=> deck._id !== deckID));
   }
 
@@ -55,9 +44,7 @@ function App() {
         {decks.map((deck) => (
           <li key={deck._id}>
             <button onClick={()=>handleDelete(deck._id)}>X</button>
-
-            
-            {deck.title} 
+          <Link to={`decks/${deck._id}`}>{deck.title}</Link>
           
           </li>
           ))}
@@ -70,7 +57,6 @@ function App() {
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
           setTitle(e.target.value)
         }
-        //TODO save what is typed
         }
         />
         <button>Create Deck</button>

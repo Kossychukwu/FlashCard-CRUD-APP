@@ -1,13 +1,16 @@
 import React from 'react'
 import { APP_URL } from './config';
+
+
 export type TDeck = {
   title: string;
+  cards: string[];
   _id: string;
 };
 
 async function getDecks():Promise <TDeck[]> {
    const response = await fetch(`${APP_URL}/decks`);
-      return response.json()
+      return response.json();
 }
 
-export default getDecks;
+export default getDecks; 

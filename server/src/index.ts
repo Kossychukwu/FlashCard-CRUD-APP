@@ -5,6 +5,12 @@ import express, {Request, Response} from 'express';
 import mongoose from 'mongoose';
 import Deck from "./models/Deck";
 import cors from "cors";
+import { getDeckController } from './controllers/getDeckController';
+import { createDeckController } from './controllers/createDeckController';
+import { deleteDeckController } from './controllers/deleteDeckController';
+import { createCardInDeckController } from './controllers/createCardInDeckController';
+import { getDeckCardController } from './controllers/getDeckCardController';
+import { deleteDeckCardController } from './controllers/deleteDeckCardController';
 
 
 const PORT  = 5000
@@ -13,30 +19,17 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get('/decks', async (req: Request, res: Response)=>{
+app.get('/decks', getDeckController)
 
-    const decks = await Deck.find()
+app.post('/decks', createDeckController)
 
-    res.json(decks)
-})
+app.delete("/decks/:deckID", deleteDeckController)
 
-app.post('/decks', async(req: Request, res: Response)=>{
-   
-    const newDeck = new Deck({
-        title: req.body.title,
-    })
-    const CreatedDeck = await newDeck.save();
-    res.json(CreatedDeck);
-})
+app.get("/decks/:deckID", getDeckCardController)
 
-app.delete("/decks/:deckID", async (req: Request, res: Response)=>{
+app.post("/decks/:deckID/cards", createCardInDeckController)
 
-    const deckID = req.params.deckID 
-    
-    const deck = await Deck.findByIdAndDelete(deckID)
-
-    res.json(deck)
-})
+app.delete("/decks/:deckID/cards/:index", deleteDeckCardController)
 
 mongoose.set('strictQuery', true)
 mongoose.connect(process.env.MONGO_URL!).then(() => {

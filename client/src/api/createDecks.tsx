@@ -15,4 +15,4 @@ async function createDecks(title: string) {
        return response.json()
 }
 
-export default createDecks;
+export default createDecks; 

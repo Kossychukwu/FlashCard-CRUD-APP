@@ -4,6 +4,7 @@ import App from './App'
 import './index.css'
 import {createBrowserRouter,RouterProvider,} from "react-router-dom";
 import Deck from './Deck';
+import { Header } from './assets/Header';
 
 
 const router = createBrowserRouter([
@@ -20,6 +21,7 @@ const router = createBrowserRouter([
  
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
+    <Header/>
     <RouterProvider router={router} />
   </React.StrictMode>,
 )

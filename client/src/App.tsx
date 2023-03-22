@@ -7,7 +7,6 @@ import { TDeck } from './api/getDecks';
 import './App.css'
 
 
-
 function App() {
   const [decks, setDecks] = useState <TDeck[]>([]);
   const [title, setTitle] = useState("");
